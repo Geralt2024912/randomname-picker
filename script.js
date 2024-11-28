@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Store the original names for restart functionality
     let originalNames = [];
     let remainingNames = [];
+    let pickedNames = [];
 
     // Add restart button to HTML dynamically
     const restartButton = document.createElement('button');
@@ -69,7 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const randomIndex = Math.floor(Math.random() * remainingNames.length);
             const selectedName = remainingNames[randomIndex];
 
-            // Remove the selected name from remaining names
+            // Add to picked names array and update display
+            pickedNames.push(selectedName);
+            updatePickedNamesList();
+
+            // Remove from remaining names
             remainingNames.splice(randomIndex, 1);
 
             nameDisplay.querySelector('.name-text').textContent = selectedName;
@@ -136,4 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
             muteButton.style.transform = 'scale(1)';
         }, 200);
     });
+
+    // Add this new function to update the picked names display
+    function updatePickedNamesList() {
+        const pickedNamesList = document.getElementById('pickedNamesList');
+        pickedNamesList.innerHTML = ''; // Clear current list
+
+        pickedNames.forEach((name, index) => {
+            const nameDiv = document.createElement('div');
+            nameDiv.textContent = `${index + 1}. ${name}`;
+            pickedNamesList.appendChild(nameDiv);
+        });
+    }
 });
