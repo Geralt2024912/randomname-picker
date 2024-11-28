@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Random Person Picker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button id="muteButton" class="mute-button">
+        🔊
+    </button>
+    <audio id="pickSound" preload="auto">
+        <source src="./sound.mp3" type="audio/mpeg">
+    </audio>
+    <div class="container">
+        <div class="name-display" id="nameDisplay">
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <span class="name-text">Click to Pick!</span>
+            <span class="emoji">🤪</span>
+        </div>
+        <button id="pickButton">Pick A Person!</button>
+
+        <div class="settings">
+            <div class="made-by">任洋编写</div>
+            <textarea id="nameList" placeholder="Enter student names, one per line...">
+Alice
+Bob
+Charlie
+David
+Emma
+Frank
+Grace
+Henry
+Isabella
+Jack</textarea>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
