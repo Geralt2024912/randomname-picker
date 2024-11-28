@@ -91,9 +91,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Restart button functionality
     restartButton.addEventListener('click', () => {
-        remainingNames = [...originalNames];
+        // Reset remaining names
+        initializeNames();
+
+        // Clear picked names array
+        pickedNames = [];
+
+        // Clear the picked names display
+        const pickedNamesList = document.getElementById('pickedNamesList');
+        pickedNamesList.innerHTML = '';
+
+        // Reset name display
         nameDisplay.querySelector('.name-text').textContent = 'Click to Pick!';
-        updateButtonsVisibility();
+        nameDisplay.classList.remove('animate');
+
+        // Show pick button, hide restart button
+        pickButton.style.display = 'block';
+        restartButton.style.display = 'none';
     });
 
     // Add keyboard event listener for space bar
@@ -123,7 +137,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.code === 'Escape' &&
             restartButton.style.display !== 'none') {
             event.preventDefault();
-            restartButton.click(); // Trigger the restart button click
+
+            // Clear picked names array
+            pickedNames = [];
+
+            // Clear the picked names display
+            const pickedNamesList = document.getElementById('pickedNamesList');
+            pickedNamesList.innerHTML = '';
+
+            restartButton.click();
         }
     });
 
