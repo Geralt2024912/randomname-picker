@@ -48,7 +48,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const audio = new Audio('./sound.mp3');
     audio.preload = 'auto';
 
-    // Function to play sound
+    const muteButton = document.getElementById('muteButton');
+    let isMuted = false;
+
+    // Move mute button handler to top level
+    muteButton.addEventListener('click', (e) => {
+        // Stop event propagation
+        e.stopPropagation();
+
+        // Toggle mute state
+        isMuted = !isMuted;
+
+        // Update all audio elements
+        pickSound.muted = isMuted;
+        bubbleSound.muted = isMuted;
+        audio.muted = isMuted;  // Also mute the main audio instance
+
+        // Update button text
+        muteButton.textContent = isMuted ? '🔇' : '🔊';
+
+        // Add animation
+        muteButton.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            muteButton.style.transform = 'scale(1)';
+        }, 200);
+    });
+
+    // Update playPickSound function to check mute state
     function playPickSound() {
         if (isMuted) return;
 
@@ -232,22 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             restartButton.click();  // Trigger restart button functionality
         }
-    });
-
-    const muteButton = document.getElementById('muteButton');
-    let isMuted = false;
-
-    muteButton.addEventListener('click', () => {
-        isMuted = !isMuted;
-        pickSound.muted = isMuted;
-        bubbleSound.muted = isMuted;
-        muteButton.textContent = isMuted ? '🔇' : '🔊';
-
-        // Add a little animation
-        muteButton.style.transform = 'scale(1.2)';
-        setTimeout(() => {
-            muteButton.style.transform = 'scale(1)';
-        }, 200);
     });
 
     // Add this new function to update the picked names display
