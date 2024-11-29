@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pickSound = document.getElementById('pickSound');
     const nameList = document.getElementById('nameList');
     let isAnimating = false;
+    let shuffleInterval;
 
     // Store the original names for restart functionality
     let originalNames = [];
@@ -40,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
     pickButton.addEventListener('click', () => {
         if (isAnimating) return;
 
+        // Add red color class when picking starts
+        pickButton.classList.add('picking');
+
         // Play sound when button is clicked
         pickSound.currentTime = 0;  // Reset sound to start
         pickSound.play();
@@ -54,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Quick shuffle animation for 3 seconds
         let shuffleCount = 0;
-        const shuffleInterval = setInterval(() => {
+        shuffleInterval = setInterval(() => {
             nameDisplay.querySelector('.name-text').textContent =
                 remainingNames[Math.floor(Math.random() * remainingNames.length)];
             shuffleCount++;
@@ -84,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nameDisplay.classList.remove('animate');
                 isAnimating = false;
                 pickButton.disabled = false;
+                pickButton.classList.remove('picking');  // Remove red color class
                 updateButtonsVisibility();
             }, 2000);
         }
@@ -134,21 +139,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add keyboard event listener for Escape key
+    // Update keyboard event listener for Escape key
     document.addEventListener('keydown', (event) => {
-        // Check if it's Escape key and restart button is visible
-        if (event.code === 'Escape' &&
-            restartButton.style.display !== 'none') {
+        if (event.code === 'Escape') {
             event.preventDefault();
 
-            // Clear picked names array
-            pickedNames = [];
+            // Stop all animations and processes
+            clearInterval(shuffleInterval);  // Add this variable to global scope
+            isAnimating = false;
+            pickButton.disabled = false;
+            pickButton.classList.remove('picking');
+            nameDisplay.classList.remove('animate');
+            nameDisplay.querySelector('.name-text').textContent = 'Click to Pick!';
 
-            // Clear the picked names display
-            const pickedNamesList = document.getElementById('pickedNamesList');
-            pickedNamesList.innerHTML = '';
+            // Reset sound
+            pickSound.pause();
+            pickSound.currentTime = 0;
+        }
+    });
 
-            restartButton.click();
+    // Add keyboard event listener for Backspace key
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Backspace' &&
+            restartButton.style.display !== 'none' &&
+            !event.target.matches('textarea, input')) {  // Prevent when typing in textarea
+            event.preventDefault();
+            restartButton.click();  // Trigger restart button functionality
         }
     });
 
