@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         namesContainer.style.flexDirection = 'column';
         namesContainer.style.alignItems = 'center';
         namesContainer.style.gap = '10px';
-        namesContainer.style.marginTop = '20px';  // Add space below emoji
+        namesContainer.style.transform = 'translateY(-50px)';  // Move names up
 
         // Move emoji to top by changing DOM order
         const emoji = nameDisplay.querySelector('.emoji');

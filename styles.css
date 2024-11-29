@@ -130,8 +130,9 @@ h1 {
 
 .name-display.animate .emoji {
     position: relative;
-    font-size: clamp(3rem, 8vw, 5rem);
-    margin-bottom: 20px;
+    font-size: clamp(4rem, 10vw, 6rem);
+    margin-bottom: 30px;
+    transform: translateY(-20px);
 }
 
 @keyframes scaleEffect {
@@ -608,10 +609,9 @@ h1 {
     animation: popAndShake 0.8s ease-out forwards;
     color: yellow;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-size: clamp(1.5rem, 4vw, 3rem);
-    margin: clamp(5px, 1.5vh, 10px) 0;
-    padding: clamp(5px, 1vw, 10px);
+    font-size: clamp(2.5rem, 6vw, 5rem);
     text-align: center;
+    white-space: nowrap;
 }
 
 /* Responsive design */
