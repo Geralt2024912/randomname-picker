@@ -81,6 +81,8 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 20px;
+    font-size: clamp(2rem, 5vw, 4rem);
+    padding: clamp(1rem, 3vw, 2rem);
 }
 
 /* Base size for larger screens */
@@ -119,7 +121,10 @@ h1 {
 }
 
 .name-display.animate .emoji {
-    font-size: 5rem;
+    position: absolute;
+    top: clamp(10%, 15vh, 20%);
+    font-size: clamp(3rem, 8vw, 5rem);
+    margin-bottom: clamp(20px, 4vh, 30px);
 }
 
 @keyframes scaleEffect {
@@ -205,9 +210,10 @@ h1 {
 
 .settings {
     display: flex;
-    gap: 20px;
+    gap: clamp(10px, 2vw, 20px);
     align-items: flex-start;
     position: relative;
+    padding: clamp(10px, 2vw, 20px);
 }
 
 .made-by {
@@ -235,14 +241,14 @@ h1 {
 }
 
 #nameList {
-    width: 80%;
-    height: 150px;
-    padding: 1rem;
+    width: clamp(200px, 80%, 400px);
+    height: clamp(100px, 30vh, 150px);
+    padding: clamp(0.5rem, 1vw, 1rem);
     border-radius: 10px;
     border: none;
     background: rgba(255, 255, 255, 0.8);
     resize: vertical;
-    font-size: 1rem;
+    font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 #restartButton {
@@ -516,9 +522,9 @@ h1 {
 }
 
 .picked-names-box {
-    width: 200px;
+    width: clamp(150px, 90%, 200px);
     background: rgba(255, 255, 255, 0.8);
-    padding: 15px;
+    padding: clamp(10px, 2vw, 15px);
     border-radius: 10px;
     margin-left: 20px;
 }
@@ -530,18 +536,18 @@ h1 {
 }
 
 .picked-names-list {
-    max-height: 150px;
+    max-height: clamp(100px, 30vh, 150px);
     /* Same height as nameList textarea */
     overflow-y: auto;
     padding: 5px;
 }
 
 .picked-names-list div {
-    padding: 8px;
-    margin: 5px 0;
+    padding: clamp(5px, 1vw, 8px);
+    margin: clamp(3px, 1vh, 5px) 0;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
-    font-size: 1rem;
+    font-size: clamp(0.8rem, 2vw, 1rem);
     color: #000;
 }
 
@@ -549,12 +555,16 @@ h1 {
 @media screen and (max-width: 768px) {
     .settings {
         flex-direction: column;
+        align-items: center;
     }
 
     .picked-names-box {
-        width: 100%;
-        margin-left: 0;
-        margin-top: 20px;
+        width: clamp(200px, 90%, 300px);
+        margin-top: clamp(10px, 2vh, 20px);
+    }
+
+    .name-display.animate {
+        padding-top: clamp(50px, 10vh, 100px);
     }
 }
 
@@ -587,8 +597,9 @@ h1 {
     animation: popAndShake 0.8s ease-out forwards;
     color: yellow;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-size: clamp(2rem, 5vw, 4rem);
-    margin: 10px 0;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    margin: clamp(5px, 1.5vh, 10px) 0;
+    padding: clamp(5px, 1vw, 10px);
 }
 
 /* Responsive design */
@@ -601,6 +612,105 @@ h1 {
 @media screen and (max-width: 480px) {
     .pop-name {
         font-size: clamp(1.2rem, 3vw, 2.5rem);
+    }
+}
+
+/* Firework adjustments */
+.firework::before,
+.firework::after {
+    transform: scale(clamp(0.6, 0.8vw, 1));
+}
+
+/* Button styles */
+#pickButton,
+#restartButton {
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 4vw, 2rem);
+    border-radius: clamp(25px, 5vw, 50px);
+}
+
+/* Settings area */
+.settings {
+    gap: clamp(10px, 2vw, 20px);
+    padding: clamp(10px, 2vw, 20px);
+}
+
+#nameList {
+    width: clamp(200px, 80%, 400px);
+    height: clamp(100px, 30vh, 150px);
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    padding: clamp(0.5rem, 1vw, 1rem);
+}
+
+/* Picked names box */
+.picked-names-box {
+    width: clamp(150px, 90%, 200px);
+    padding: clamp(10px, 2vw, 15px);
+}
+
+.picked-names-box h3 {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+.picked-names-list {
+    max-height: clamp(100px, 30vh, 150px);
+}
+
+.picked-names-list div {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    padding: clamp(5px, 1vw, 8px);
+    margin: clamp(3px, 1vh, 5px) 0;
+}
+
+/* Mute button */
+.mute-button {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    padding: clamp(8px, 1.5vw, 15px);
+    top: clamp(10px, 2vh, 20px);
+    right: clamp(10px, 2vw, 20px);
+}
+
+/* Media queries for specific device types */
+@media screen and (max-width: 768px) {
+    .settings {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .picked-names-box {
+        width: clamp(200px, 90%, 300px);
+        margin-top: clamp(10px, 2vh, 20px);
+    }
+
+    .name-display.animate {
+        padding-top: clamp(50px, 10vh, 100px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: clamp(0.5rem, 2vw, 1rem);
+    }
+
+    .name-display.animate .emoji {
+        top: 5%;
+    }
+}
+
+/* Landscape mode adjustments */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+    .name-display.animate {
+        padding-top: clamp(20px, 5vh, 40px);
+    }
+
+    .name-display.animate .emoji {
+        top: 5%;
+        font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    .pop-name {
+        font-size: clamp(1rem, 3vw, 2rem);
+        margin: clamp(2px, 1vh, 5px) 0;
     }
 }
 

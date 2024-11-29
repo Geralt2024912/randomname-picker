@@ -40,15 +40,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let pendingPicks = 0;  // Add this with other global variables
 
+    // Add this function to handle sound initialization
+    function initializeSound() {
+        // Create a pool of audio elements for multiple clicks
+        const audioPool = Array.from({ length: 5 }, () => {
+            const audio = new Audio(pickSound.src);
+            audio.preload = 'auto';
+            return audio;
+        });
+        let audioIndex = 0;
+
+        return () => {
+            // Get next audio from pool
+            const audio = audioPool[audioIndex];
+
+            // Reset audio if it's playing
+            audio.currentTime = 0;
+
+            // Play with user interaction promise handling
+            const playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Audio play failed:", error);
+                });
+            }
+
+            // Update index for next use
+            audioIndex = (audioIndex + 1) % audioPool.length;
+        };
+    }
+
+    const playPickSound = initializeSound();
+
+    // Update the pick button click handler
     pickButton.addEventListener('click', () => {
-        if (remainingNames.length === 0) return;  // Only check if names are available
+        if (remainingNames.length === 0) return;
 
-        // Create a new instance of Audio for each click
-        const newPickSound = new Audio(pickSound.src);
-        newPickSound.muted = pickSound.muted;  // Maintain mute state
-        newPickSound.play();
+        // Play sound with the new function
+        if (!pickSound.muted) {
+            playPickSound();
+        }
 
-        pendingPicks++;  // Increment pending picks counter
+        pendingPicks++;
 
         if (!isAnimating) {
             isAnimating = true;
@@ -213,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const muteButton = document.getElementById('muteButton');
     let isMuted = false;
 
+    // Update mute button to handle audio pool
     muteButton.addEventListener('click', () => {
         isMuted = !isMuted;
         pickSound.muted = isMuted;
