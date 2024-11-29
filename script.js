@@ -96,6 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Restart button functionality
     restartButton.addEventListener('click', () => {
+        // Play bubble sound
+        bubbleSound.currentTime = 0;
+        bubbleSound.play();
+
         // Reset remaining names to original list
         remainingNames = [...originalNames];
 
@@ -174,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     muteButton.addEventListener('click', () => {
         isMuted = !isMuted;
         pickSound.muted = isMuted;
+        bubbleSound.muted = isMuted;
         muteButton.textContent = isMuted ? '🔇' : '🔊';
 
         // Add a little animation
