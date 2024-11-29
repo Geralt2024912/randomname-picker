@@ -40,48 +40,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let pendingPicks = 0;  // Add this with other global variables
 
-    // Add this function to handle sound initialization
-    function initializeSound() {
-        // Create a pool of audio elements for multiple clicks
-        const audioPool = Array.from({ length: 5 }, () => {
-            const audio = new Audio(pickSound.src);
-            audio.preload = 'auto';
-            return audio;
-        });
-        let audioIndex = 0;
+    // Initialize audio context
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioContext = new AudioContext();
 
-        return () => {
-            // Get next audio from pool
-            const audio = audioPool[audioIndex];
+    // Create single audio instance
+    const audio = new Audio('./sound.mp3');
+    audio.preload = 'auto';
 
-            // Reset audio if it's playing
+    // Function to play sound
+    function playPickSound() {
+        if (isMuted) return;
+
+        // If audio is already playing, stop it
+        if (!audio.paused) {
+            audio.pause();
             audio.currentTime = 0;
+        }
 
-            // Play with user interaction promise handling
-            const playPromise = audio.play();
-
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Audio play failed:", error);
-                });
-            }
-
-            // Update index for next use
-            audioIndex = (audioIndex + 1) % audioPool.length;
-        };
+        // Play new sound
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Audio play failed:", error);
+            });
+        }
     }
 
-    const playPickSound = initializeSound();
-
-    // Update the pick button click handler
+    // Update pick button click handler
     pickButton.addEventListener('click', () => {
         if (remainingNames.length === 0) return;
 
-        // Play sound with the new function
-        if (!pickSound.muted) {
-            playPickSound();
-        }
-
+        playPickSound();  // Play sound first
         pendingPicks++;
 
         if (!isAnimating) {
@@ -247,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const muteButton = document.getElementById('muteButton');
     let isMuted = false;
 
-    // Update mute button to handle audio pool
     muteButton.addEventListener('click', () => {
         isMuted = !isMuted;
         pickSound.muted = isMuted;
@@ -272,4 +261,15 @@ document.addEventListener('DOMContentLoaded', () => {
             pickedNamesList.appendChild(nameDiv);
         });
     }
+
+    // Initialize audio on first user interaction
+    document.addEventListener('touchstart', function initAudio() {
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+        }).catch(error => {
+            console.log("Audio initialization failed:", error);
+        });
+        document.removeEventListener('touchstart', initAudio);
+    }, false);
 });

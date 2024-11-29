@@ -120,11 +120,18 @@ h1 {
     }
 }
 
+.name-display.animate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
 .name-display.animate .emoji {
-    position: absolute;
-    top: clamp(10%, 15vh, 20%);
+    position: relative;
     font-size: clamp(3rem, 8vw, 5rem);
-    margin-bottom: clamp(20px, 4vh, 30px);
+    margin-bottom: 20px;
 }
 
 @keyframes scaleEffect {
@@ -183,7 +190,11 @@ h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
+    outline: none;
+}
+
+#pickButton:focus {
+    outline: none;
 }
 
 #pickButton:hover {
@@ -600,6 +611,7 @@ h1 {
     font-size: clamp(1.5rem, 4vw, 3rem);
     margin: clamp(5px, 1.5vh, 10px) 0;
     padding: clamp(5px, 1vw, 10px);
+    text-align: center;
 }
 
 /* Responsive design */
@@ -693,7 +705,8 @@ h1 {
     }
 
     .name-display.animate .emoji {
-        top: 5%;
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        margin-bottom: 15px;
     }
 }
 
@@ -704,8 +717,8 @@ h1 {
     }
 
     .name-display.animate .emoji {
-        top: 5%;
-        font-size: clamp(2rem, 6vw, 3rem);
+        font-size: clamp(2rem, 5vw, 3rem);
+        margin-bottom: 15px;
     }
 
     .pop-name {
