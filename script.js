@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeNames();
     nameList.addEventListener('input', initializeNames);
 
+    let pendingPicks = 0;  // Add this with other global variables
+
     pickButton.addEventListener('click', () => {
         if (remainingNames.length === 0) return;  // Only check if names are available
 
@@ -46,33 +48,55 @@ document.addEventListener('DOMContentLoaded', () => {
         newPickSound.muted = pickSound.muted;  // Maintain mute state
         newPickSound.play();
 
-        // Store the current timestamp
-        const clickTime = Date.now();
+        pendingPicks++;  // Increment pending picks counter
 
-        // Create a separate animation sequence for this click
-        const animate = () => {
+        if (!isAnimating) {
+            isAnimating = true;
+            pickButton.classList.add('picking');
+
+            // Quick shuffle animation
+            let shuffleCount = 0;
+            shuffleInterval = setInterval(() => {
+                nameDisplay.querySelector('.name-text').textContent =
+                    remainingNames[Math.floor(Math.random() * remainingNames.length)];
+                shuffleCount++;
+
+                if (shuffleCount === 15) {
+                    clearInterval(shuffleInterval);
+                    processAllPicks();
+                }
+            }, 200);
+        }
+    });
+
+    function processAllPicks() {
+        // Process all pending picks at once
+        while (pendingPicks > 0 && remainingNames.length > 0) {
             const randomIndex = Math.floor(Math.random() * remainingNames.length);
             const selectedName = remainingNames[randomIndex];
 
-            // Add to picked names array and update display
             pickedNames.push(selectedName);
-            updatePickedNamesList();
-
-            // Remove from remaining names
             remainingNames.splice(randomIndex, 1);
+            pendingPicks--;
+        }
 
-            nameDisplay.querySelector('.name-text').textContent = selectedName;
-            nameDisplay.classList.add('animate');
+        // Update display with all picked names
+        updatePickedNamesList();
 
-            setTimeout(() => {
-                nameDisplay.classList.remove('animate');
-                updateButtonsVisibility();
-            }, 500);  // Reduced animation time for rapid clicks
-        };
+        // Show the last picked name in the main display
+        if (pickedNames.length > 0) {
+            nameDisplay.querySelector('.name-text').textContent = pickedNames[pickedNames.length - 1];
+        }
 
-        // Execute animation
-        animate();
-    });
+        nameDisplay.classList.add('animate');
+
+        setTimeout(() => {
+            nameDisplay.classList.remove('animate');
+            isAnimating = false;
+            pickButton.classList.remove('picking');
+            updateButtonsVisibility();
+        }, 2000);
+    }
 
     // Restart button functionality
     restartButton.addEventListener('click', () => {
@@ -129,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
 
             // Stop all animations and processes
-            clearInterval(shuffleInterval);  // Add this variable to global scope
+            clearInterval(shuffleInterval);
             isAnimating = false;
             pickButton.disabled = false;
             pickButton.classList.remove('picking');
@@ -139,6 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reset sound
             pickSound.pause();
             pickSound.currentTime = 0;
+
+            // Reset pending picks
+            pendingPicks = 0;
         }
     });
 
