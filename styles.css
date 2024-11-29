@@ -42,11 +42,11 @@ h1 {
 }
 
 .name-display {
-    font-size: 4rem;
+    font-size: clamp(2rem, 5vw, 4rem);
+    min-height: clamp(100px, 30vh, 200px);
+    padding: clamp(0.5rem, 2vw, 1rem);
     color: #ff35b1;
     margin: 2rem 0;
-    padding: 1rem;
-    min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,11 +63,11 @@ h1 {
 }
 
 .name-display .emoji {
-    font-size: 4rem;
+    font-size: clamp(2rem, 6vw, 4rem);
 }
 
 .name-display.animate {
-    animation: scaleEffect 3s ease-out forwards;
+    animation: scaleEffect 2.5s ease-out forwards;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -76,8 +76,8 @@ h1 {
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    color: yellow;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 20px;
@@ -555,6 +555,52 @@ h1 {
         width: 100%;
         margin-left: 0;
         margin-top: 20px;
+    }
+}
+
+@keyframes popAndShake {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+
+    75% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+
+    85% {
+        transform: scale(1.2) rotate(5deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+.pop-name {
+    animation: popAndShake 0.8s ease-out forwards;
+    color: yellow;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin: 10px 0;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .pop-name {
+        font-size: clamp(1.5rem, 4vw, 3rem);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .pop-name {
+        font-size: clamp(1.2rem, 3vw, 2.5rem);
     }
 }
 

@@ -70,32 +70,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function processAllPicks() {
-        // Process all pending picks at once
+        const selectedNames = [];
+        const nameDisplay = document.getElementById('nameDisplay');
+
+        // Process all pending picks
         while (pendingPicks > 0 && remainingNames.length > 0) {
             const randomIndex = Math.floor(Math.random() * remainingNames.length);
             const selectedName = remainingNames[randomIndex];
-
+            selectedNames.push(selectedName);
             pickedNames.push(selectedName);
             remainingNames.splice(randomIndex, 1);
             pendingPicks--;
         }
 
-        // Update display with all picked names
+        // Update picked names list
         updatePickedNamesList();
 
-        // Show the last picked name in the main display
-        if (pickedNames.length > 0) {
-            nameDisplay.querySelector('.name-text').textContent = pickedNames[pickedNames.length - 1];
-        }
-
+        // Keep fireworks and emoji, just clear the name-text
+        const nameText = nameDisplay.querySelector('.name-text');
+        nameText.textContent = '';
         nameDisplay.classList.add('animate');
 
+        // Create container for animated names
+        const namesContainer = document.createElement('div');
+        namesContainer.style.display = 'flex';
+        namesContainer.style.flexDirection = 'column';
+        namesContainer.style.alignItems = 'center';
+        namesContainer.style.gap = '10px';
+        namesContainer.style.marginTop = '20px';  // Add space below emoji
+
+        // Move emoji to top by changing DOM order
+        const emoji = nameDisplay.querySelector('.emoji');
+        nameDisplay.insertBefore(emoji, nameDisplay.firstChild);
+
+        // Insert namesContainer after emoji
+        nameDisplay.insertBefore(namesContainer, emoji.nextSibling);
+
+        // Show all names with animation
+        selectedNames.forEach(name => {
+            const nameElement = document.createElement('div');
+            nameElement.className = 'pop-name';
+            nameElement.textContent = name;
+            namesContainer.appendChild(nameElement);
+        });
+
+        // Reset after animation
         setTimeout(() => {
             nameDisplay.classList.remove('animate');
+            // Only reset the name text, keep fireworks and emoji
+            nameText.textContent = 'Click to Pick!';
+            // Remove the names container
+            namesContainer.remove();
+            // Restore original DOM order
+            nameDisplay.appendChild(emoji);
             isAnimating = false;
             pickButton.classList.remove('picking');
             updateButtonsVisibility();
-        }, 2000);
+        }, 2500);
     }
 
     // Restart button functionality
