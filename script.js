@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Restart button functionality
     restartButton.addEventListener('click', () => {
-        // Reset remaining names
-        initializeNames();
+        // Reset remaining names to original list
+        remainingNames = [...originalNames];
 
         // Clear picked names array
         pickedNames = [];
@@ -108,6 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show pick button, hide restart button
         pickButton.style.display = 'block';
         restartButton.style.display = 'none';
+
+        // Update the textarea with all original names
+        nameList.value = originalNames.join('\n');
     });
 
     // Add keyboard event listener for space bar
