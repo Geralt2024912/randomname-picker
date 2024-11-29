@@ -39,38 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
     nameList.addEventListener('input', initializeNames);
 
     pickButton.addEventListener('click', () => {
-        if (isAnimating) return;
+        if (remainingNames.length === 0) return;  // Only check if names are available
 
-        // Add red color class when picking starts
-        pickButton.classList.add('picking');
+        // Create a new instance of Audio for each click
+        const newPickSound = new Audio(pickSound.src);
+        newPickSound.muted = pickSound.muted;  // Maintain mute state
+        newPickSound.play();
 
-        // Play sound when button is clicked
-        pickSound.currentTime = 0;  // Reset sound to start
-        pickSound.play();
+        // Store the current timestamp
+        const clickTime = Date.now();
 
-        if (remainingNames.length === 0) {
-            nameDisplay.textContent = 'No more names left!';
-            return;
-        }
-
-        isAnimating = true;
-        pickButton.disabled = true;
-
-        // Quick shuffle animation for 3 seconds
-        let shuffleCount = 0;
-        shuffleInterval = setInterval(() => {
-            nameDisplay.querySelector('.name-text').textContent =
-                remainingNames[Math.floor(Math.random() * remainingNames.length)];
-            shuffleCount++;
-
-            if (shuffleCount === 15) {  // Changed to make it last 3 seconds
-                clearInterval(shuffleInterval);
-                finalPick();
-            }
-        }, 200);  // Changed to 200ms (15 × 200ms = 3000ms total)
-
-        function finalPick() {
-            // Randomly select from remaining names
+        // Create a separate animation sequence for this click
+        const animate = () => {
             const randomIndex = Math.floor(Math.random() * remainingNames.length);
             const selectedName = remainingNames[randomIndex];
 
@@ -86,12 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 nameDisplay.classList.remove('animate');
-                isAnimating = false;
-                pickButton.disabled = false;
-                pickButton.classList.remove('picking');  // Remove red color class
                 updateButtonsVisibility();
-            }, 2000);
-        }
+            }, 500);  // Reduced animation time for rapid clicks
+        };
+
+        // Execute animation
+        animate();
     });
 
     // Restart button functionality
