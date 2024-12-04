@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Random Person Picker</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#002a38">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -30,18 +47,41 @@
 
         <div class="settings">
             <textarea id="nameList" placeholder="Enter student names, one per line...">
-Alice
-Lisa
-Bob
-Charlie
-David
-任洋
-Emma
-Frank
-Grace
-Henry
-Isabella
-Jack</textarea>
+Stormy Pleym
+Safoura Koungouonou
+Dan Yang
+Heather Fedorchuk
+Devin Campbell
+Diego Arenas
+Gianna Read-Skelton
+Cody McLeod
+Marius Tanglao
+Mark Soriano
+Geralt Ren
+Jack Wasylenko
+Finn O’Driscoll
+Alan Moreira
+Tom Khrustalev
+Dev Patel
+Juan camelo
+Ben Sathler Lenz Cesar
+Gurkamal Singh
+Meet Patel
+Niya Maredia
+Liam Braun
+Dianne Lee
+Crystal Park
+Ana Quebral
+Maca Perez Cobo
+Jerry Olanda
+Jen Le
+Deepti
+Hana Nguyen
+Raizel Criz Tayao
+Lisa Liu
+Linh Vu
+Molly Wong
+Monica Fung</textarea>
 
             <div class="picked-names-box">
                 <h3>picked names</h3>
